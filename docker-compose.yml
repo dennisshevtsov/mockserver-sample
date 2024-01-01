@@ -1,14 +1,15 @@
 version: '3.5'
 
 services:
-  mock-server:
+  mockserver:
+    container_name: mockserver
     image: mockserver/mockserver:mockserver-5.15.0
     ports:
-      - 5001:80
+      - 5001:80 # the server port is set in the mockserver.properties file
     environment:
-      - MOCKSERVER_PROPERTY_FILE=/config/mockserver.properties
-      - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/initializer.json
+      - MOCKSERVER_PROPERTY_FILE=/config/mockserver.properties # settings of mockserver
+      - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/initializer.json # the file with mocked requests
     volumes:
-      - type: bind
-        source: .
-        target: /config
+      - type: bind      # docker container user any files in the file system of the project, so we have to create a volume to which the user has access
+        source: .       # the path in the file system of the project. there are the configuration files in the folder
+        target: /config # the path in the docker container
